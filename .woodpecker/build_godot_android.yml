@@ -1,0 +1,25 @@
+when:
+  - event: push
+    branch: main
+
+matrix:
+  GODOT_VERSION:
+    - 4.3-stable
+    - 4.4.1-stable
+    - 4.5-beta3
+
+steps:
+  - name: Build v${GODOT_VERSION}
+    image: docker
+    commands:
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
+      - docker build -t ghcr.io/bigaston/godotci:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} -f DockerfileAndroid godotci
+      - docker push ghcr.io/bigaston/godotci:android-${GODOT_VERSION}
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD

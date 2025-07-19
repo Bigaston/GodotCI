@@ -1,0 +1,19 @@
+when:
+  - event: push
+    branch: main
+
+steps:
+  - name: Build plugin
+    image: docker
+    commands:
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
+      - docker build -t ghcr.io/bigaston/itchci:latest itchci
+      - docker push ghcr.io/bigaston/itchci:latest
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
