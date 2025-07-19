@@ -13,7 +13,7 @@ steps:
     image: docker
     commands:
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY
-      - docker build -t $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} -f DockerfileAndroid .
+      - docker build -t $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} --target android .
       - docker push $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:android-${GODOT_VERSION}
 
     volumes:

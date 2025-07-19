@@ -13,7 +13,7 @@ steps:
     image: docker
     commands:
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
-      - docker build -t ghcr.io/bigaston/godotci:${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} godotci
+      - docker build -t ghcr.io/bigaston/godotci:${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} --target desktop godotci
       - docker push ghcr.io/bigaston/godotci:${GODOT_VERSION}
 
     volumes:
