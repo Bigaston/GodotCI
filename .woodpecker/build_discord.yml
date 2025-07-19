@@ -19,6 +19,10 @@ steps:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       DOCKER_USERNAME:
-        from_secret: DOCKER_CODEBERG_USERNAME
+        from_secret: DOCKER_USERNAME
       DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
+      DOCKER_CODEBERG_USERNAME:
+        from_secret: DOCKER_CODEBERG_USERNAME
+      DOCKER_CODEBERG_PASSWORD:
         from_secret: DOCKER_CODEBERG_PASSWORD
