@@ -1,0 +1,46 @@
+when:
+  - event: push
+    branch: main
+
+matrix:
+  GODOT_VERSION:
+    - 4.3-stable
+    - 4.4.1-stable
+    - 4.5-beta3
+
+steps:
+  - name: Build v${GODOT_VERSION}
+    image: docker
+    commands:
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY
+      - docker build -t $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} -f DockerfileAndroid .
+      - docker push $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:android-${GODOT_VERSION}
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
+      DOCKER_REGISTRY:
+        from_secret: DOCKER_REGISTRY
+
+  - name: Discord Notification Success
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: success
+      matrix: Android ${GODOT_VERSION}
+      webhook:
+        from_secret: WEBHOOK
+    when: 
+      - status: ["success"]
+  - name: Discord Notification Failure
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: failure
+      matrix: Android ${GODOT_VERSION}
+      webhook:
+        from_secret: WEBHOOK
+    when:
+      - status: ["failure"]
