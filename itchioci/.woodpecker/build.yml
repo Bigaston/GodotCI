@@ -1,0 +1,43 @@
+# Secrets:
+# DOCKER_USERNAME: The username to be used with your Docker repository
+# DOCKER_PASSWORD: The password linked to the username (like a PAT)
+# DOCKER_REGISTRY: The docker registry where the image should go. Like ghcr.io
+
+when:
+  - event: push
+    branch: main
+    
+steps:
+  - name: Build
+    image: docker
+    commands:
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY
+      - docker build -t $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:latest .
+      - docker push $DOCKER_REGISTRY/${CI_REPO_OWNER,,}/${CI_REPO_NAME,,}:latest
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
+      DOCKER_REGISTRY:
+        from_secret: DOCKER_REGISTRY
+
+  - name: Discord Notification Success
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: success
+      webhook:
+        from_secret: WEBHOOK
+    when: 
+      - status: ["success"]
+  - name: Discord Notification Failure
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: failure
+      webhook:
+        from_secret: WEBHOOK
+    when:
+      - status: ["failure"]
