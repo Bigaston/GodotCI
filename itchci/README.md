@@ -1,4 +1,7 @@
 # ItchCI
+```
+ghcr.io/bigaston/itchci:latest
+```
 
 A simple Debian image with butler already installed.  
 The Butler executable is located at /bin/butler and can be accessed with `butler`.  
