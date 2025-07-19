@@ -13,7 +13,7 @@ steps:
     image: docker
     commands:
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
-      - docker build -t ghcr.io/bigaston/godotci:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} -f DockerfileAndroid godotci
+      - docker build -t ghcr.io/bigaston/godotci:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} -f godotci/DockerfileAndroid godotci
       - docker push ghcr.io/bigaston/godotci:android-${GODOT_VERSION}
 
     volumes:
