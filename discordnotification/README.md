@@ -1,4 +1,7 @@
 # DiscordNotification
+```
+ghcr.io/bigaston/discordnotification:latest
+```
 
 A Go application that run on an Alpine based container that can send notification to your Discord when the build Success/Fail.  
 Simply copy and paste this at the end of your Woodpecker CI workflow, this is required to have it 2 times, because Woodpecker don't have a system to let your next action now if the pipeline is a success or not.  

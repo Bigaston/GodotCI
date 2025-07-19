@@ -1,7 +1,9 @@
 # GodotCI
 
 A set of Docker Container usefull to automate build of Godot games with Woodpecker CI.  
-I think it can be usefull for a lot of people so I publish them here. If you find these Docker usefull, feel free to ping me on [BlueSky](https://bsky.app/profile/bigaston.me), [check my website](https://bigaston.me) or [support me on Ko-Fi](https://ko-fi.com/bigaston).
+I think it can be usefull for a lot of people so I publish them here. If you find these Docker usefull, feel free to ping me on [BlueSky](https://bsky.app/profile/bigaston.me), [check my website](https://bigaston.me) or [support me on Ko-Fi](https://ko-fi.com/bigaston).  
+
+You can find some examples workflow [here](./examples/).
 
 ## What is CI/CD?
 CI and CD respectively mean Continuous Integration and Continuous Deployment. It's a way to execute a set of actions everytime an action occures. Like every day at 10AM, at every commit on main branch, on each tags... It's used in a lot of big game studio to create games build, execute tests, deploy server... It's removing all the pain of building the game and discover that you can't because reason. And combined with [Itch.io butler](https://itch.io/docs/butler/) and [Steam Cmd](https://developer.valvesoftware.com/wiki/SteamCMD) you can even push your game on Steam and Itch.io.
@@ -18,3 +20,8 @@ Here some links to documentation that I use when I need to create some new CI fo
 - [Itch.io butler](https://itch.io/docs/butler/)
 - [GameCI's Steam Deploy](https://github.com/game-ci/steam-deploy): I use this as an inspiration to understand how to use SteamCMD in CI
 - [Godot CLI](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html)
+
+## Containers
+- [discordnotification](./discordnotification/): Send a message to a Discord channel when the build is a success/fail via Discord Webhook
+- [itchci](./itchci/): A container with itch.io butler already installed
+- [godotci](./godotci/): Contains everything you need to export a Godot game (Godot and export templates in the good folder) for Windows/Linux/Web/Android
