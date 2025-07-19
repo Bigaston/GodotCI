@@ -1,0 +1,53 @@
+when:
+  - event: push
+    branch: main
+
+matrix:
+  TARGET:
+    - Linux
+    - Windows
+    - Web
+
+steps:
+  - name: Build the game for ${TARGET}
+    image: ghcr.io/bigaston/godotci:4.5-beta3
+    commands:
+      - godot --version
+
+      - "> commit.txt"
+      - short_commit=$(git rev-parse --short HEAD)
+      - echo "$short_commit" > commit.txt
+
+      - godot --headless --editor --import
+
+      - mkdir -p .build/${TARGET}
+
+      - godot --headless --export-release ${TARGET}
+
+  - name: Upload Itchio
+    image: ghcr.io/bigaston/itchci:latest
+    commands:
+      - butler -V
+      - butler push .build/${TARGET} username/game:${TARGET}
+    environment:
+      BUTLER_API_KEY:
+        from_secret: BUTLER_API_KEY
+
+  - name: Discord Notification Success
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: success
+      matrix: ${TARGET}
+      webhook:
+        from_secret: WEBHOOK
+    when: 
+      - status: ["success"]
+  - name: Discord Notification Failure
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: failure
+      matrix: ${TARGET}
+      webhook:
+        from_secret: WEBHOOK
+    when:
+      - status: ["failure"]

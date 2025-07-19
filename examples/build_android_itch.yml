@@ -1,0 +1,54 @@
+when:
+  - event: push
+    branch: main
+
+steps:
+  - name: Build the game for Android
+    image: ghcr.io/bigaston/godotci:android-4.5-beta3
+    commands:
+      - godot --version
+
+      - "> commit.txt"
+      - short_commit=$(git rev-parse --short HEAD)
+      - echo "$short_commit" > commit.txt
+
+      - godot --headless --editor --import
+
+      - mkdir -p .build/Android
+
+      - cat /usr/bin/godot.version
+      - mkdir -p android/build
+      - unzip ~/.local/share/godot/export_templates/$(cat /usr/bin/godot.version)/android_source.zip -d android/build
+      - touch android/build/.gdignore
+      - cat /usr/bin/godot.version > android/.build_version
+ 
+# TODO: Find a way to export as release and not debug :D
+      - godot --headless -v --export-debug Android
+
+  - name: Upload Itchio
+    image: ghcr.io/bigaston/itchci:latest
+    commands:
+      - butler -V
+      - butler push .build/Android username/game:Android
+    environment:
+      BUTLER_API_KEY:
+        from_secret: BUTLER_API_KEY
+
+  - name: Discord Notification Success
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: success
+      matrix: Android
+      webhook:
+        from_secret: WEBHOOK
+    when: 
+      - status: ["success"]
+  - name: Discord Notification Failure
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: failure
+      matrix: Android
+      webhook:
+        from_secret: WEBHOOK
+    when:
+      - status: ["failure"]

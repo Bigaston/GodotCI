@@ -1,0 +1,62 @@
+when:
+  - event: push
+    branch: main
+
+matrix:
+  TARGET:
+    - Linux
+    - Windows
+
+steps:
+  - name: Build the game for ${TARGET}
+    image: ghcr.io/bigaston/godotci:4.5-beta3
+    commands:
+      - godot --version
+
+      - "> commit.txt"
+      - short_commit=$(git rev-parse --short HEAD)
+      - echo "$short_commit" > commit.txt
+
+      - godot --headless --editor --import
+
+      - mkdir -p .build/${TARGET}
+
+      - godot --headless --export-release ${TARGET}
+
+  - name: Upload Steam
+    image: debian
+    commands:
+      - apt update
+      - apt install -y lib32gcc-s1 curl tar
+
+      - curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -
+      - chmod +x steamcmd.sh
+
+      - mkdir -p /root/Steam/config
+      - echo "$STEAM_AUTH_VDF" | base64 -d > /root/Steam/config/config.vdf
+      - chmod 777 /root/Steam/config/config.vdf
+
+      - ./steamcmd.sh +login username +quit
+      - ./steamcmd.sh +login username +run_app_build support/steam/upload_config/upload_${TARGET}.vdf +quit
+    environment:
+      STEAM_AUTH_VDF:
+        from_secret: STEAM_AUTH_VDF
+
+  - name: Discord Notification Success
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: success
+      matrix: ${TARGET}
+      webhook:
+        from_secret: WEBHOOK
+    when: 
+      - status: ["success"]
+  - name: Discord Notification Failure
+    image: ghcr.io/bigaston/discordnotification
+    settings:
+      result: failure
+      matrix: ${TARGET}
+      webhook:
+        from_secret: WEBHOOK
+    when:
+      - status: ["failure"]
