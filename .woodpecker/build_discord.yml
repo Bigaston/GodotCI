@@ -9,6 +9,11 @@ steps:
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
       - docker build -t ghcr.io/bigaston/discordnotification:latest discordnotification
       - docker push ghcr.io/bigaston/discordnotification:latest
+      
+      # Codeberg
+      - docker login -u $DOCKER_CODEBERG_USERNAME -p $DOCKER_CODEBERG_PASSWORD codeberg.org
+      - docker image tag ghcr.io/bigaston/discordnotification:latest codeberg.org/bigaston/discordnotification:latest
+      - docker push codeberg.org/bigaston/discordnotification:latest
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
