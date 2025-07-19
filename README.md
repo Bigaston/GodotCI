@@ -5,6 +5,8 @@ I think it can be usefull for a lot of people so I publish them here. If you fin
 
 You can find some examples workflow [here](./examples/).
 
+If you see this repository on Github, known that this is a mirror of the [Codeberg Repository](https://codeberg.org/Bigaston/GodotCI) !
+
 ## What is CI/CD?
 CI and CD respectively mean Continuous Integration and Continuous Deployment. It's a way to execute a set of actions everytime an action occures. Like every day at 10AM, at every commit on main branch, on each tags... It's used in a lot of big game studio to create games build, execute tests, deploy server... It's removing all the pain of building the game and discover that you can't because reason. And combined with [Itch.io butler](https://itch.io/docs/butler/) and [Steam Cmd](https://developer.valvesoftware.com/wiki/SteamCMD) you can even push your game on Steam and Itch.io.
 
