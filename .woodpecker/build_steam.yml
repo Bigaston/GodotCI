@@ -1,0 +1,28 @@
+when:
+  - event: push
+    branch: main
+
+steps:
+  - name: Build plugin
+    image: docker
+    commands:
+      - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
+      - docker build -t ghcr.io/bigaston/steamci:latest steamci
+      - docker push ghcr.io/bigaston/steamci:latest
+
+      # Codeberg
+      - docker login -u $DOCKER_CODEBERG_USERNAME -p $DOCKER_CODEBERG_PASSWORD codeberg.org
+      - docker image tag ghcr.io/bigaston/steamci:latest codeberg.org/bigaston/steamci:latest
+      - docker push codeberg.org/bigaston/steamci:latest
+      
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DOCKER_USERNAME:
+        from_secret: DOCKER_USERNAME
+      DOCKER_PASSWORD:
+        from_secret: DOCKER_PASSWORD
+      DOCKER_CODEBERG_USERNAME:
+        from_secret: DOCKER_CODEBERG_USERNAME
+      DOCKER_CODEBERG_PASSWORD:
+        from_secret: DOCKER_CODEBERG_PASSWORD

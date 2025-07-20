@@ -1,0 +1,24 @@
+"AppBuild"
+{
+	"AppID" "{{ .AppId }}"
+	"Desc" "{{ .Description }}"
+
+	"ContentRoot" "{{ .ContentRoot }}"
+	"BuildOutput" ".\output\" 
+{{ if .HasSetLive}}
+	"SetLive" "{{ .SetLive }}"
+{{ end }}
+
+	"Depots"
+	{
+		"{{ .DepotId }}"
+		{
+			"FileMapping"
+			{
+				"LocalPath" "{{ .LocalPath }}"
+				"DepotPath" "."
+				"recursive" "1"
+			}
+		}
+	}
+}

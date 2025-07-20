@@ -24,21 +24,23 @@ steps:
       - godot --headless --export-release ${TARGET}
 
   - name: Upload Steam
-    image: ghcr.io/bigaston/steamci
-    settings:
-      steam_username: something_deploy
-      steam_auth_vdf:
+    image: debian
+    commands:
+      - apt update
+      - apt install -y lib32gcc-s1 curl tar
+
+      - curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -
+      - chmod +x steamcmd.sh
+
+      - mkdir -p /root/Steam/config
+      - echo "$STEAM_AUTH_VDF" | base64 -d > /root/Steam/config/config.vdf
+      - chmod 777 /root/Steam/config/config.vdf
+
+      - ./steamcmd.sh +login username +quit
+      - ./steamcmd.sh +login username +run_app_build support/steam/upload_config/upload_${TARGET}.vdf +quit
+    environment:
+      STEAM_AUTH_VDF:
         from_secret: STEAM_AUTH_VDF
-      app_id: 000
-      content_root: ".build"
-      depot_id: 
-        Windows: 000
-        Linux: 001
-      local_path: 
-        Windows: "Windows/*"
-        Linux: "Linux/*"
-      matrix: ${TARGET}
-      set_live: "beta"
 
   - name: Discord Notification Success
     image: ghcr.io/bigaston/discordnotification
