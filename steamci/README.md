@@ -1,4 +1,7 @@
 # SteamCI
+```
+ghcr.io/bigaston/steamci
+```
 
 This is a all contained Woodpecker CI plugins that will generate the .vdf of Steam for you, and then upload your game on the specified depot.
 
