@@ -16,6 +16,7 @@ steps:
       - docker push codeberg.org/bigaston/steamci:latest
 
       - docker builder prune --filter until=24h --force
+      - docker image prune --filter until=24h --force
       
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
