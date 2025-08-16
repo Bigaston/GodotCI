@@ -15,6 +15,8 @@ steps:
       - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ghcr.io
       - docker build -t ghcr.io/bigaston/godotci:android-${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} --target android godotci
       - docker push ghcr.io/bigaston/godotci:android-${GODOT_VERSION}
+      
+      - docker builder prune --filter until=24h --force
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
