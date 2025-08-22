@@ -16,8 +16,7 @@ steps:
       - docker build -t ghcr.io/bigaston/godotci:${GODOT_VERSION} --build-arg VERSION=${GODOT_VERSION} --target desktop godotci
       - docker push ghcr.io/bigaston/godotci:${GODOT_VERSION}
 
-      - docker builder prune --filter until=24h --force
-      - docker image prune --filter until=24h --force
+      - docker system prune -a -f
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
