@@ -14,9 +14,6 @@ steps:
       - docker login -u $DOCKER_CODEBERG_USERNAME -p $DOCKER_CODEBERG_PASSWORD codeberg.org
       - docker image tag ghcr.io/bigaston/steamci:latest codeberg.org/bigaston/steamci:latest
       - docker push codeberg.org/bigaston/steamci:latest
-
-      - docker builder prune --filter until=24h --force
-      - docker image prune --filter until=24h --force
       
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

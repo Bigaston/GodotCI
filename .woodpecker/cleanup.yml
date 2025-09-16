@@ -1,0 +1,25 @@
+when:
+  - event: push
+    branch: main
+    
+skip_clone: true
+
+steps:
+  - name: Cleanup Docker
+    image: docker
+    commands:
+      - docker image prune -a --filter until=24h -f
+      - docker builder prune -a --filter until=24h -f
+      - docker container prune --filter until=24h -f
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+depends_on:
+  - build_discord
+  - build_godot_android
+  - build_godot
+  - build_itchio
+  - build_steam
+
+runs_on: [ success, failure ]

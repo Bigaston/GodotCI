@@ -15,9 +15,6 @@ steps:
       - docker image tag ghcr.io/bigaston/discordnotification:latest codeberg.org/bigaston/discordnotification:latest
       - docker push codeberg.org/bigaston/discordnotification:latest
 
-      - docker builder prune --filter until=24h --force
-      - docker image prune --filter until=24h --force
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
