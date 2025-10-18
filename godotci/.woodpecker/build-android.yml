@@ -4,7 +4,7 @@ when:
 
 matrix:
   GODOT_VERSION:
-    - 4.5-stable
+    - 4.5.1-stable
 
 steps:
   - name: Build v${GODOT_VERSION}
