@@ -26,5 +26,6 @@ Here some links to documentation that I use when I need to create some new CI fo
 ## Containers
 - [discordnotification](./discordnotification/): Send a message to a Discord channel when the build is a success/fail via Discord Webhook
 - [itchci](./itchci/): A container with itch.io butler already installed
+- [bunnyci](./bunnyci/): A plugin to help you publish your game on Bunny.net
 - [steamci](./steamci/): A plugin to help you publish your game on Steam from CI
 - [godotci](./godotci/): Contains everything you need to export a Godot game (Godot and export templates in the good folder) for Windows/Linux/Web/Android
