@@ -6,7 +6,7 @@ matrix:
   GODOT_VERSION:
     - 4.4.1-stable
     - 4.5.1-stable
-    - 4.6-dev5
+    - 4.6-dev6
 
 steps:
   - name: Build v${GODOT_VERSION}
