@@ -5,7 +5,7 @@ RUN apt update
 RUN apt install -y curl zip
 
 # Install butler
-RUN curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+RUN curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
 RUN unzip butler.zip
 RUN mv butler /bin/butler
 RUN chmod +x /bin/butler
