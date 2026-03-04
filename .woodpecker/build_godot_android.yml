@@ -8,6 +8,7 @@ matrix:
     - 4.5.1-stable
     - 4.5.2-rc1
     - 4.6-stable
+    - 4.7-dev2
 
 steps:
   - name: Build v${GODOT_VERSION}
