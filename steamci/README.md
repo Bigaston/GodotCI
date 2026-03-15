@@ -5,6 +5,13 @@ ghcr.io/bigaston/steamci
 
 This is a all contained Woodpecker CI plugins that will generate the .vdf of Steam for you, and then upload your game on the specified depot.
 
+## Get the steam_auth_vdf
+- Download steamcmd and extract it somewhere
+- Start it with `steamcmd.exe +login [your username]`
+- Connect and everything
+- Open a powershell terminal and launch `$bytes = [System.IO.File]::ReadAllBytes(".\config\config.vdf"); [Convert]::ToBase64String($bytes) | Out-File ".\encoded.txt"`
+- Your base64 encoded VDF will be at ./encoded.txt
+
 ## Settings
 - steam_username: The username linked with the auth vdf
 - steam_auth_vdf: (More doc coming) A base64 encoded string that contains all the content of config.vdf that you will get when you execute the local +login command. A bit clanky because Steam don't provide easy access token, so you have to login on local to pass SteamGuard, and then copy the content of the file
